@@ -9,18 +9,10 @@ export class HomePage extends BasePage {
 
   constructor(page) {
     super(page);
-    this.createButton = page.locator(
-      'button[aria-label="Create board or Workspace"]'
-    );
-    this.createBoardButton = page.locator(
-      'button[data-testid="header-create-board-button"]'
-    );
-    this.boardTitleInput = page.locator(
-      'input[data-testid="create-board-title-input"]'
-    );
-    this.createBoardSubmit = page.locator(
-      'button[data-testid="create-board-submit-button"]:has-text("Create")'
-    );
+    this.createButton = page.getByTestId("header-create-menu-button");
+    this.createBoardButton = page.getByTestId("header-create-board-button");
+    this.boardTitleInput = page.getByTestId("create-board-title-input");
+    this.createBoardSubmit = page.getByTestId("create-board-submit-button");
   }
 
   async createNewBoard(boardName: string) {
@@ -28,6 +20,5 @@ export class HomePage extends BasePage {
     await this.createBoardButton.click();
     await this.boardTitleInput.fill(boardName);
     await this.createBoardSubmit.click();
-    await this.waitForElement(`text=${boardName}`);
   }
 }

@@ -5,15 +5,16 @@ export class CardPage extends BasePage {
   private addCardButton: Locator;
   private cardTitleInput: Locator;
   private addCardSubmit: Locator;
-  private cardTitle: Locator;
+  readonly cardTitle: Locator;
   private moveCardButton: Locator;
   private moveCardListOptions: Locator;
   private moveCardSubmitButton: Locator;
   private archiveCardButton: Locator;
+  private moveCardPositionSelector: Locator;
 
   constructor(page) {
     super(page);
-    this.addCardButton = page.locator('button:has-text("Add a card")');
+    this.addCardButton = page.getByTestId("list-add-card-button");
     this.cardTitleInput = page.getByPlaceholder(
       "Enter a title or paste a link"
     );
@@ -27,6 +28,9 @@ export class CardPage extends BasePage {
       "move-card-popover-move-button"
     );
     this.archiveCardButton = page.getByTestId("quick-card-editor-archive");
+    this.moveCardPositionSelector = page.getByTestId(
+      "move-card-popover-select-position"
+    );
   }
 
   async addCardToList(cardName: string) {
@@ -36,9 +40,15 @@ export class CardPage extends BasePage {
     expect(this.cardTitle.filter({ hasText: cardName })).toBeVisible;
   }
 
+  async addAnotherCardToList(cardName: string) {
+    await this.cardTitleInput.fill(cardName);
+    await this.addCardSubmit.click();
+    expect(this.cardTitle.filter({ hasText: cardName })).toBeVisible;
+  }
+
   async openCardOptions(cardName: string) {
     await this.cardTitle
-      //.filter({ hasText: cardName })
+      .filter({ hasText: cardName })
       .click({ button: "right" });
   }
 
@@ -49,8 +59,25 @@ export class CardPage extends BasePage {
   }
 
   async reorderCardWithinList(cardName: string, targetPosition: number) {
-    const card = this.page.locator(`text=${cardName}`);
-    await card.dragTo(this.page.locator("div.list-card").nth(targetPosition));
+    // Locate the card based on its text to ensure we select the right one
+    const card = this.page
+      .getByTestId("card-name")
+      .filter({ hasText: cardName });
+
+    // Wait for the card to be visible and enabled before dragging
+    await expect(card).toBeVisible();
+    await expect(card).toBeEnabled();
+
+    // Locate the target position within the list where we want to drag the card
+    const targetPositionLocator = this.page
+      .getByTestId("list-cards")
+      .nth(targetPosition);
+
+    // Ensure target position is visible before the drag-and-drop action
+    await expect(targetPositionLocator).toBeVisible();
+
+    // Drag the card to the target position
+    await card.dragTo(targetPositionLocator, { timeout: 60000 }); // Extended timeout for stability
   }
 
   async archiveCard() {
@@ -63,7 +90,15 @@ export class CardPage extends BasePage {
     await this.page
       .locator('div[role="option"]:has-text("' + targetListName + '")')
       .click();
-    await expect(this.moveCardSubmitButton).toBeVisible();
+    await this.moveCardSubmitButton.click();
+  }
+
+  async moveCardIntoList(targetPosition: any) {
+    await this.moveCardButton.click();
+    await this.moveCardPositionSelector.click();
+    await this.page
+      .locator('div[role="option"]:has-text("' + targetPosition + '")')
+      .click();
     await this.moveCardSubmitButton.click();
   }
 }

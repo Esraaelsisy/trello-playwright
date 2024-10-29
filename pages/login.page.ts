@@ -9,12 +9,12 @@ export class LoginPage extends BasePage {
 
   constructor(page) {
     super(page);
-    this.userInput = page.getByPlaceholder("Enter your email");
+    this.userInput = page.getByTestId("username");
     this.continueButton = page
       .getByRole("button")
       .filter({ hasText: "Continue" });
-    this.passwordInput = page.locator('input[name="password"]');
-    this.submitButton = page.locator('button[type="submit"]');
+    this.passwordInput = page.getByTestId("password");
+    this.submitButton = page.getByRole("button").filter({ hasText: "Log in" });
   }
 
   async loginToTrello() {
