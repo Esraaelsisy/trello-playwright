@@ -16,9 +16,9 @@ export class HomePage extends BasePage {
   }
 
   async createNewBoard(boardName: string) {
-    await this.createButton.click();
-    await this.createBoardButton.click();
-    await this.boardTitleInput.fill(boardName);
-    await this.createBoardSubmit.click();
+    await this.clickElement(this.createButton, { waitForVisible: true });
+    await this.clickElement(this.createBoardButton, { waitForVisible: true });
+    await this.fillInput(this.boardTitleInput, boardName);
+    await this.clickElement(this.createBoardSubmit, { waitForVisible: true });
   }
 }
