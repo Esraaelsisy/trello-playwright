@@ -26,10 +26,11 @@ export class LoginPage extends BasePage {
     password: any = process.env.TRELLO_PASSWORD
   ) {
     await this.navigateTo("https://trello.com/login");
-    await this.userInput.fill(username);
-    await this.continueButton.click();
-    await this.passwordInput.fill(password);
-    await this.submitButton.click();
+    await this.fillInput(this.userInput, username);
+    await this.clickElement(this.continueButton, { waitForVisible: true });
+    await this.fillInput(this.passwordInput, password);
+    await this.clickElement(this.submitButton, { waitForVisible: true });
+
     await this.page.waitForLoadState("load");
   }
 }
