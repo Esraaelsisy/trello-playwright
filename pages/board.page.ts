@@ -23,8 +23,8 @@ export class BoardPage extends BasePage {
     this.boardTitle = page.getByTestId("board-name-display");
     this.addCardButton = page.locator('button:has-text("Add a card")');
     this.cardTitleInput = page.getByTestId("list-card-composer-textarea");
-    this.addCardSubmit = page //getByTestId("list-card-composer-add-card-button");
-      .locator('button:has-text("Add card")');
+    this.addCardSubmit = page.getByTestId("list-card-composer-add-card-button");
+    //.locator('button:has-text("Add card")');
   }
 
   async addList(listName: string) {
