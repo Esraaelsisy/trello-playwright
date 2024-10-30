@@ -19,6 +19,7 @@ This repository contains automated tests for Trello's web application using [Pla
 
 The repository is organized as follows:
 
+```bash
 trello-playwright/
 │
 ├── fixtures/                # Contains test setup files
@@ -45,7 +46,7 @@ trello-playwright/
 ├── playwright.config.ts     # Configuration file for Playwright
 ├── package.json             # Project dependencies and scripts
 └── README.md                # Project documentation
-
+```
 
 ## Prerequisites
 
