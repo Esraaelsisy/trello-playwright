@@ -10,8 +10,8 @@ This repository contains automated tests for Trello's web application using [Pla
 - [Environment Variables](#environment-variables)
 - [Running the Tests](#running-the-tests)
 - [Test Reports](#test-reports)
-- [Debugging Tests](#debugging-tests)
-- [Additional Information](#additional-information)
+- [Architectural Decisions](#architectural-decisions)
+
 
 ---
 
